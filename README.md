@@ -60,3 +60,10 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Informasi Project
 Project aplikasi peminjaman alat berbasis Laravel.
+
+## Fitur Aplikasi
+- Login dan Register
+- Manajemen alat
+- Peminjaman alat
+- Pengembalian alat
+- Laporan peminjaman
