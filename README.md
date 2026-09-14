@@ -67,3 +67,10 @@ Project aplikasi peminjaman alat berbasis Laravel.
 - Peminjaman alat
 - Pengembalian alat
 - Laporan peminjaman
+
+## Instalasi
+1. Clone repository
+2. Install dependency Laravel
+3. Atur file .env
+4. Jalankan migration database
+5. Jalankan aplikasi Laravel
