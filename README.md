@@ -74,3 +74,6 @@ Project aplikasi peminjaman alat berbasis Laravel.
 3. Atur file .env
 4. Jalankan migration database
 5. Jalankan aplikasi Laravel
+
+## Penggunaan
+Aplikasi digunakan untuk mengelola data alat, peminjaman, pengembalian, dan laporan.
