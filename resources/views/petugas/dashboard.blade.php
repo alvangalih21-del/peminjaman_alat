@@ -59,8 +59,8 @@
                                 @endforelse
                             </td>
                             <td class="px-5 py-4">
-                                <span class="font-semibold {{ $peminjaman->status === 'diajukan' ? 'text-yellow-700' : ($peminjaman->status === 'selesai' ? 'text-green-700' : 'text-blue-700') }}">
-                                    {{ ucfirst($peminjaman->status) }}
+                                <span class="font-semibold {{ $peminjaman->status === 'diajukan' ? 'text-yellow-700' : (($peminjaman->status === 'dikembalikan' || $peminjaman->status === 'selesai') ? 'text-green-700' : 'text-blue-700') }}">
+                                    {{ $peminjaman->status === 'dikembalikan' || $peminjaman->status === 'selesai' ? 'Selesai' : ucfirst($peminjaman->status) }}
                                 </span>
                             </td>
                             <td class="px-5 py-4">

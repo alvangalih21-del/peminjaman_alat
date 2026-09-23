@@ -61,20 +61,28 @@
                                 </ul>
                             </td>
                             <td class="py-3 px-4 border-b text-center">
-                                @if($item->pengembalian)
-                                    <span class="rounded bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-700">Diajukan peminjam</span>
-                                @else
-                                    <span class="text-xs text-gray-500">Belum diajukan</span>
-                                @endif
+                                <span class="px-2.5 py-1 text-xs font-semibold rounded-full
+                                    @if($item->status == 'diajukan') bg-yellow-100 text-yellow-800
+                                    @elseif($item->status == 'dipinjam') bg-blue-100 text-blue-800
+                                    @elseif($item->status == 'dikembalikan') bg-emerald-100 text-emerald-800
+                                    @else bg-red-100 text-red-800 @endif">
+                                    {{ $item->status == 'dikembalikan' ? 'Selesai' : ucfirst($item->status) }}
+                                </span>
                             </td>
                             <td class="py-3 px-4 border-b text-center">
                                 <form action="{{ route('petugas.peminjaman.kembali', $item->id) }}" method="POST" class="space-y-2">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="text" name="kondisi_kembali" value="Baik" placeholder="Kondisi kembali" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                    <input type="number" name="denda" value="0" min="0" placeholder="Denda" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-left text-[11px] font-semibold uppercase tracking-wide text-gray-600">
+                                        Kondisi kembali
+                                        <input type="text" name="kondisi_kembali" value="Baik" placeholder="Kondisi kembali" class="mt-1 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    </label>
+                                    <label class="block text-left text-[11px] font-semibold uppercase tracking-wide text-gray-600">
+                                        Denda (Rp)
+                                        <input type="number" name="denda" value="0" min="0" placeholder="0" class="mt-1 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    </label>
                                     <button type="submit" onclick="return confirm('Apakah alat ini sudah dikembalikan?')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-semibold transition shadow-sm">
-                                        Catat Pengembalian
+                                        Terima Pengembalian
                                     </button>
                                 </form>
                             </td>

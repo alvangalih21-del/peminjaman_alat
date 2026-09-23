@@ -25,7 +25,7 @@ class PetugasController extends Controller
         $jumlahMenunggu = Peminjaman::where('status', 'diajukan')->count();
         $jumlahDipinjam = Peminjaman::whereIn('status', ['dipinjam', 'telat'])->count();
         $jumlahTelat = Peminjaman::where('status', 'telat')->count();
-        $jumlahSelesai = Peminjaman::where('status', 'selesai')->count();
+        $jumlahSelesai = Peminjaman::whereIn('status', ['dikembalikan', 'selesai'])->count();
         $pengajuanTerbaru = Peminjaman::with(['user', 'detailPinjam.alat'])
             ->latest('created_at')
             ->take(5)
@@ -143,7 +143,7 @@ class PetugasController extends Controller
     {
         $validated = $request->validate([
             'kondisi_kembali' => 'required|string',
-            'denda' => 'nullable|integer',
+            'denda' => 'nullable|integer|min:0',
         ]);
 
         DB::beginTransaction();
@@ -151,26 +151,30 @@ class PetugasController extends Controller
         try {
             $peminjaman = Peminjaman::with(['detailPinjam', 'pengembalian'])->findOrFail($peminjamanId);
 
-            if ($peminjaman->pengembalian) {
-                $peminjaman->pengembalian->update([
+            $pengembalian = $peminjaman->pengembalian()->first();
+
+            if ($pengembalian) {
+                $pengembalian->update([
                     'tgl_kembali' => now(),
                     'kondisi_kembali' => $validated['kondisi_kembali'],
-                    'denda' => $validated['denda'] ?? 0,
+                    'denda' => (int) ($validated['denda'] ?? 0),
                     'petugas_id' => auth()->id(),
-                    'status' => 'selesai',
                 ]);
             } else {
-                Pengembalian::create([
+                $pengembalian = Pengembalian::create([
                     'peminjaman_id' => $peminjaman->id,
                     'tgl_kembali' => now(),
                     'kondisi_kembali' => $validated['kondisi_kembali'],
-                    'denda' => $validated['denda'] ?? 0,
+                    'denda' => (int) ($validated['denda'] ?? 0),
                     'petugas_id' => auth()->id(),
-                    'status' => 'selesai',
                 ]);
             }
 
-            $peminjaman->update(['status' => 'selesai']);
+            $statusBaru = $peminjaman->tgl_kembali_plan && $peminjaman->tgl_kembali_plan->lt(now())
+                ? 'telat'
+                : 'dikembalikan';
+
+            $peminjaman->update(['status' => $statusBaru]);
 
             $this->ubahStokAlat($peminjaman, kurangi: false);
 
@@ -178,7 +182,7 @@ class PetugasController extends Controller
 
             return redirect()->back()->with(
                 'success',
-                'Pengembalian berhasil dicatat dan stok dipulihkan.'
+                'Pengembalian berhasil dicatat dan data otomatis dibuat untuk peminjam.'
             );
         } catch (Throwable $e) {
             DB::rollBack();

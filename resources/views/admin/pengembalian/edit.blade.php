@@ -48,8 +48,8 @@
                 </label>
 
                 <input type="text"
-                      value="{{ $pengembalian->peminjaman?->user?->name ?? 'Nama peminjam tidak tersedia' }}"
-                       class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+                       value="{{ $pengembalian->peminjaman?->user?->name ?? 'Nama peminjam tidak tersedia' }}"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 text-gray-700 cursor-not-allowed"
                        disabled>
 
             </div>
@@ -63,7 +63,7 @@
 
                 <input type="text"
                        value="{{ $pengembalian->petugas?->name ?? 'Petugas tidak tersedia' }}"
-                       class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 text-gray-700 cursor-not-allowed"
                        disabled>
 
             </div>

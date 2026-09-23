@@ -17,7 +17,7 @@
                 <h1 class="max-w-xl text-3xl font-black tracking-tight md:text-4xl">Temukan alat untuk kebutuhan Anda.</h1>
             </div>
             <div class="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-emerald-50 backdrop-blur-sm">
-                <span class="font-bold">{{ $alats->total() }}</span> alat tersedia
+                <span class="font-bold">{{ $alats->count() }}</span> alat tersedia
             </div>
         </div>
         <p class="mt-4 max-w-2xl text-sm leading-6 text-slate-200">Pilih alat, tentukan jumlah, lalu kirim pengajuan peminjaman dengan mudah.</p>

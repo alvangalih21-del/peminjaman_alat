@@ -21,7 +21,7 @@ class PeminjamController extends Controller
             ->where('status', 'dipinjam')
             ->count();
         $jumlahSelesai = Peminjaman::where('user_id', auth()->id())
-            ->where('status', 'selesai')
+            ->whereIn('status', ['dikembalikan', 'selesai'])
             ->count();
 
         return view('peminjam.dashboard', compact(
@@ -106,7 +106,6 @@ class PeminjamController extends Controller
             'kondisi_kembali' => 'Menunggu pemeriksaan petugas',
             'denda' => 0,
             'petugas_id' => null,
-            'status' => 'diajukan',
         ]);
 
         return back()->with('success', 'Permintaan pengembalian berhasil dikirim ke petugas.');
@@ -115,7 +114,7 @@ class PeminjamController extends Controller
     // Melihat riwayat peminjaman user yang sedang login
     public function riwayatPeminjaman()
     {
-        $peminjamans = Peminjaman::with(['detailPinjam.alat', 'pengembalian'])
+        $peminjamans = Peminjaman::with(['user', 'detailPinjam.alat', 'pengembalian'])
             ->where('user_id', auth()->id())
             ->latest()
             ->get();

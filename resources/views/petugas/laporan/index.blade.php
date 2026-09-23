@@ -45,9 +45,9 @@
                                     <span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold
                                         @if($item->status === 'diajukan') bg-yellow-100 text-yellow-800
                                         @elseif($item->status === 'dipinjam') bg-blue-100 text-blue-800
-                                        @elseif($item->status === 'selesai') bg-emerald-100 text-emerald-800
+                                        @elseif($item->status === 'dikembalikan' || $item->status === 'selesai') bg-emerald-100 text-emerald-800
                                         @else bg-red-100 text-red-800 @endif">
-                                        {{ ucfirst($item->status) }}
+                                        {{ $item->status === 'dikembalikan' || $item->status === 'selesai' ? 'Selesai' : ucfirst($item->status) }}
                                     </span>
                                 </td>
                                 <td class="py-3 px-4 border-b">
