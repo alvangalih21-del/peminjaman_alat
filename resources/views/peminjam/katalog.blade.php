@@ -37,7 +37,7 @@
                 <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
                     <div class="flex h-44 items-center justify-center bg-gradient-to-br from-slate-100 to-emerald-100">
                         @if($alat->gambar)
-                            <img src="{{ asset('storage/' . $alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="h-full w-full object-cover">
+                            <img src="{{ asset($alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="h-full w-full object-cover">
                         @else
                             <span class="text-5xl font-black text-slate-300">{{ strtoupper(substr($alat->nama_alat, 0, 1)) }}</span>
                         @endif

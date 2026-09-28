@@ -199,27 +199,65 @@ class PetugasController extends Controller
     // ==========================================
 
     /**
-     * Menampilkan halaman laporan (semua status, bisa dicari).
+     * Menampilkan halaman laporan dengan filter search, status, dan rentang tanggal.
      */
     public function laporan(Request $request): View
     {
         $search = $request->input('search');
+        $status = $request->input('status');
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
 
-        $peminjamans = $this->queryPeminjaman($search)->get();
+        $peminjamans = $this->queryPeminjaman($search)
+            ->when($status && $status !== 'semua', function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($tanggalMulai, function ($query, $tanggalMulai) {
+                $query->whereDate('tgl_pinjam', '>=', $tanggalMulai);
+            })
+            ->when($tanggalSelesai, function ($query, $tanggalSelesai) {
+                $query->whereDate('tgl_pinjam', '<=', $tanggalSelesai);
+            })
+            ->get();
 
-        return view('petugas.laporan.index', compact('peminjamans', 'search'));
+        return view('petugas.laporan.index', compact(
+            'peminjamans',
+            'search',
+            'status',
+            'tanggalMulai',
+            'tanggalSelesai'
+        ));
     }
 
     /**
-     * Menampilkan halaman cetak laporan (semua data, tanpa filter).
+     * Menampilkan halaman cetak laporan dengan filter yang aktif.
      */
-    public function cetakLaporan(): View
+    public function cetakLaporan(Request $request): View
     {
-        $peminjamans = Peminjaman::with(self::RELASI_DEFAULT)
-            ->latest()
+        $search = $request->input('search');
+        $status = $request->input('status');
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
+
+        $peminjamans = $this->queryPeminjaman($search)
+            ->when($status && $status !== 'semua', function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($tanggalMulai, function ($query, $tanggalMulai) {
+                $query->whereDate('tgl_pinjam', '>=', $tanggalMulai);
+            })
+            ->when($tanggalSelesai, function ($query, $tanggalSelesai) {
+                $query->whereDate('tgl_pinjam', '<=', $tanggalSelesai);
+            })
             ->get();
 
-        return view('petugas.laporan.cetak', compact('peminjamans'));
+        return view('petugas.laporan.cetak', compact(
+            'peminjamans',
+            'search',
+            'status',
+            'tanggalMulai',
+            'tanggalSelesai'
+        ));
     }
 
     // ==========================================

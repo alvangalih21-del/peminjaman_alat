@@ -11,15 +11,40 @@
                 <p class="text-sm text-gray-500">Menampilkan seluruh riwayat peminjaman untuk keperluan monitoring dan cetak laporan.</p>
             </div>
 
-            <a href="{{ route('petugas.laporan.cetak') }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+            <a href="{{ route('petugas.laporan.cetak', request()->only(['search', 'status', 'tanggal_mulai', 'tanggal_selesai'])) }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
                 Cetak Laporan
             </a>
         </div>
 
         <div class="p-5">
-            <form action="{{ route('petugas.laporan.index') }}" method="GET" class="flex w-full md:w-80 mb-4">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peminjam..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button type="submit" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 text-sm font-semibold rounded-r-lg transition">Cari</button>
+            <form action="{{ route('petugas.laporan.index') }}" method="GET" class="grid gap-3 md:grid-cols-5 mb-4">
+                <div class="md:col-span-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peminjam..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <select name="status" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="semua" {{ request('status') == 'semua' || !request('status') ? 'selected' : '' }}>Semua Status</option>
+                        <option value="diajukan" {{ request('status') == 'diajukan' ? 'selected' : '' }}>Diajukan</option>
+                        <option value="dipinjam" {{ request('status') == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                        <option value="telat" {{ request('status') == 'telat' ? 'selected' : '' }}>Terlambat</option>
+                        <option value="dikembalikan" {{ request('status') == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
+                        <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    </select>
+                </div>
+
+                <div>
+                    <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <input type="date" name="tanggal_selesai" value="{{ request('tanggal_selesai') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="md:col-span-5 flex gap-2">
+                    <button type="submit" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 text-sm font-semibold rounded-lg transition">Filter</button>
+                    <a href="{{ route('petugas.laporan.index') }}" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-50 transition">Reset</a>
+                </div>
             </form>
 
             <div class="overflow-x-auto">

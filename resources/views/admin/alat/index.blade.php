@@ -53,6 +53,7 @@
             <thead>
                 <tr class="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider">
                     <th class="py-3 px-4 border-b w-16 text-center">No</th>
+                    <th class="py-3 px-4 border-b w-24 text-center">Foto</th>
                     <th class="py-3 px-4 border-b">Nama Alat</th>
                     <th class="py-3 px-4 border-b">Kategori</th>
                     <th class="py-3 px-4 border-b">Stok</th>
@@ -69,11 +70,11 @@
                             {{ $alats->firstItem() + $loop->index }}
                         </td>
 
-                        <td class="py-3 px-4 border-b">
+                        <td class="py-3 px-4 border-b text-center">
                             @if($alat->gambar)
                                 <img src="{{ asset($alat->gambar) }}"
                                      alt="{{ $alat->nama_alat }}"
-                                     class="w-12 h-12 object-cover rounded-lg border">
+                                     class="w-12 h-12 object-cover rounded-lg border mx-auto">
                             @else
                                 <span class="text-xs text-gray-400 italic">
                                     Tidak ada
@@ -131,7 +132,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="6" class="py-4 text-center text-gray-500">
+                        <td colspan="7" class="py-4 text-center text-gray-500">
                             Belum ada data alat.
                         </td>
                     </tr>
