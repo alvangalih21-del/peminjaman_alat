@@ -71,11 +71,15 @@
                 <div class="text-lg font-semibold text-gray-800">
                     @yield('header-title', 'Dashboard')
                 </div>
-                <div>
-                    <a href="{{ route('profile.show') }}" class="mr-4 text-sm font-semibold text-gray-600 hover:text-gray-900">Profil</a>
-                    <form action="{{ route('logout') }}" method="POST">
+
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('profile.show') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 whitespace-nowrap">
+                        Profil
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="m-0">
                         @csrf
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition whitespace-nowrap">
                             Logout
                         </button>
                     </form>
